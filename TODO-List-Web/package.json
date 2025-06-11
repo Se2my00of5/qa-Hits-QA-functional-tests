@@ -1,0 +1,16 @@
+{
+    "name": "todo-macros",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "test": "jest",
+        "coverage": "jest --coverage"
+    },
+    
+    "dependencies": {
+        "bootstrap": "^5.3.6",
+        "express": "^5.1.0",
+        "helmet": "^8.1.0",
+        "path": "^0.12.7"
+    }
+}

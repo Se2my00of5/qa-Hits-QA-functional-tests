@@ -1,0 +1,9 @@
+
+cd C:\Users\Se2my00of5\Desktop\qa-Hits-QA-functional-tests
+C:/Users/Se2my00of5/Desktop/dependency-check/bin/dependency-check.bat --scan . --project "My TodoList Project" --out .
+
+
+
+cd C:\Users\Se2my00of5\Desktop\qa-Hits-QA-functional-tests
+C:/Users/Se2my00of5/Desktop/dependency-check/bin/dependency-check.bat --scan "./TODO-List-Back" --project "My TodoList Project" --out "./TODO-List-Back"
+C:/Users/Se2my00of5/Desktop/dependency-check/bin/dependency-check.bat --scan "./TODO-List-Web" --project "My TodoList Project" --out "./TODO-List-Web"

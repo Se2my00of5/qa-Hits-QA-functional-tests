@@ -1,0 +1,10 @@
+skips:
+  - 'B101'  # Пропускаем проверку на использование assert
+exclude_dirs:
+  - .venv
+  - htmlcov
+
+
+# bandit -r . -c bandit.yml -f html -o bandit_report.html
+
+# ошибка с секретным ключом в settings.py

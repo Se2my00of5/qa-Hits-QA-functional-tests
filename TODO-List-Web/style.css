@@ -1,0 +1,16 @@
+.task-warning {
+    background-color: #fff3cd !important;
+  }
+  .task-danger {
+    background-color: #f8d7da !important;
+  }
+  .task-complete {
+    text-decoration: line-through;
+    color: gray;
+  }
+
+#filterForm .form-label{
+  font-size: small;
+  margin-bottom: 0;
+  margin-left: 2px;
+}

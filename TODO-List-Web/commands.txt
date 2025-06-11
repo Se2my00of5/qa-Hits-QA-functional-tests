@@ -1,0 +1,8 @@
+npm install  
+npm install --save-dev jest  
+npm install --save-dev @babel/preset-env babel-jest
+
+npm run test
+npm run coverage
+        
+npx cypress open

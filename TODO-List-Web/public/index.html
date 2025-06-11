@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ToDo Приложение</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-light">
+
+  <div class="container py-5">
+    <h1 class="mb-4">📋 Мои задачи</h1>
+
+    <!-- Форма создания -->
+    <form id="taskForm" class="mb-4">
+      <div class="row g-2">
+        <div class="col-md-3">
+          <input type="text" id="title" class="form-control" placeholder="Название задачи" required>
+        </div>
+        <div class="col-md-3">
+          <input type="text" id="description" class="form-control" placeholder="Описание">
+        </div>
+        <div class="col-md-2">
+          <input type="date" id="deadline" class="form-control">
+        </div>
+        <div class="col-md-2">
+          <select id="priority" class="form-select">
+            <option value="">Приоритет</option>
+            <option value="Critical">Критический (!1)</option>
+            <option value="High">Высокий (!2)</option>
+            <option value="Medium">Средний (!3)</option>
+            <option value="Low">Низкий (!4)</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" type="submit">Создать</button>
+        </div>
+      </div>
+    </form>
+
+    <form id="filterForm" class="row g-2 align-items-end mb-4">
+
+    <!-- Поле сортировки -->
+    <div class="col-12 col-md-6 col-lg-2">
+      <label for="sortField" class="form-label">Сортировать по</label>
+      <select id="sortField" class="form-select">
+        <option value="created_at">Дата создания</option>
+        <option value="title">Название</option>
+        <option value="deadline">Дедлайн</option>
+        <option value="priority">Приоритет</option>
+        <option value="status">Статус</option>
+      </select>
+    </div>
+
+    <!-- Порядок -->
+    <div class="col-12 col-md-6 col-lg-2">
+      <label for="sortOrder" class="form-label">Порядок</label>
+      <select id="sortOrder" class="form-select">
+        <option value="asc">По возрастанию</option>
+        <option value="desc">По убыванию</option>
+      </select>
+    </div>
+
+      <!-- Название -->
+      <div class="col-12 col-md-6 col-lg-2">
+        <label for="filterTitle" class="form-label">Название</label>
+        <input type="text" id="filterTitle" class="form-control" placeholder="Поиск по названию">
+      </div>
+    
+      <!-- Приоритет -->
+      <div class="col-12 col-md-6 col-lg-2">
+        <label for="filterPriority" class="form-label">Приоритет</label>
+        <select id="filterPriority" class="form-select">
+          <option value="">Любой</option>
+          <option value="Critical">Критический</option>
+          <option value="High">Высокий</option>
+          <option value="Medium">Средний</option>
+          <option value="Low">Низкий</option>
+        </select>
+      </div>
+    
+      <!-- Статус -->
+      <div class="col-12 col-md-6 col-lg-2">
+        <label for="filterStatus" class="form-label">Статус</label>
+        <select id="filterStatus" class="form-select">
+          <option value="">Все</option>
+          <option value="true">Выполнено</option>
+          <option value="false">Не выполнено</option>
+        </select>
+      </div>
+    
+    
+      <!-- Кнопка -->
+      <div class="col-12 col-md-6 col-lg-2">
+        <button type="submit" class="btn btn-primary w-100">Применить</button>
+      </div>
+    </form>
+    
+    <!-- Список задач -->
+    <div id="taskList" class="list-group"></div>
+  </div>
+
+  <!-- Модальное окно для просмотра задачи -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="taskModalLabel">Просмотр задачи</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          <h5 id="modalTitle"></h5>
+          <p id="modalDescription"></p>
+          <p><strong>Приоритет:</strong> <span id="modalPriority"></span></p>
+          <p><strong>Deadline:</strong> <span id="modalDeadline"></span></p>
+          <p><strong>Статус:</strong> <span id="modalStatus"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" id="deleteBtn">Удалить</button>
+          <button class="btn btn-primary" id="editBtn">Редактировать</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для редактирования задачи -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="editTaskForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editTaskModalLabel">Редактирование задачи</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="editTitle" class="form-label">Название задачи</label>
+              <input type="text" class="form-control" id="editTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="editDescription" class="form-label">Описание</label>
+              <textarea class="form-control" id="editDescription" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="editDeadline" class="form-label">Deadline</label>
+              <input type="date" class="form-control" id="editDeadline">
+            </div>
+            <div class="mb-3">
+              <label for="editPriority" class="form-label">Приоритет</label>
+              <select id="editPriority" class="form-select">
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Bootstrap JS (обязательно для модалки) 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>-->
+
+  <script src="tasks.js"></script>
+  <script  type="module" src="script.js"></script>
+
+</body>
+</html>
