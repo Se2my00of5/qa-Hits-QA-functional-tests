@@ -35,4 +35,4 @@ jobs:
           # pip install -r requirements.txt
 
       - name: Run Bandit Scan
-        run: bandit -r . -c bandit.yml --exit-code 1
+        run: bandit -r . -c bandit.yml
